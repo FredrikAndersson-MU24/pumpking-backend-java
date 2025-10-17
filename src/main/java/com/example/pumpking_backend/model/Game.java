@@ -29,6 +29,25 @@ public class Game {
     public Game() {
     }
 
+    public Game(int id, int day, int timeOfDay, List<Integer> waterScore, boolean fertilizerScore, int weedsScore) {
+        this.id = id;
+        this.day = day;
+        this.timeOfDay = timeOfDay;
+        this.waterScore = waterScore;
+        this.fertilizerScore = fertilizerScore;
+        this.weedsScore = weedsScore;
+    }
+
+    public Game(int id, int day, int timeOfDay, List<Integer> waterScore, boolean fertilizerScore, int weedsScore, int totalScore) {
+        this.id = id;
+        this.day = day;
+        this.timeOfDay = timeOfDay;
+        this.waterScore = waterScore;
+        this.fertilizerScore = fertilizerScore;
+        this.weedsScore = weedsScore;
+        this.totalScore = totalScore;
+    }
+
     public int getId() {
         return id;
     }
