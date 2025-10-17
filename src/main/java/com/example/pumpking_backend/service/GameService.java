@@ -4,6 +4,9 @@ import com.example.pumpking_backend.model.Game;
 import com.example.pumpking_backend.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class GameService {
     private static final Map<Integer, Double> MULTIPLIERS = Map.of(
