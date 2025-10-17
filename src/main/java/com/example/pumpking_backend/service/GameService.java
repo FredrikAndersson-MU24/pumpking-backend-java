@@ -24,14 +24,64 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game createGame(Game game) {
-        return new Game(game.getDay(),
-                game.getTimeOfDay(),
-                game.getWaterScore(),
-                game.getFertilizerScore(),
-                game.getWeedsScore(),
-                game.getTotalScore(),
-                game.getUserName());
+    public Game getGameScore(Game newGame) {
+        Game prevGame = gameRepository.findById(newGame.getId()).orElse(null);
+        boolean isNew = false;
+        if (prevGame == null) {
+            if (newGame.getDay() != 0) {
+                throw new IllegalArgumentException("invalid day for new game, should be zero");
+            }
+            prevGame = gameRepository.save(newGame);
+            isNew = true;
+        }
+        if (!isNew && (newGame.getDay() <= prevGame.getDay()) || newGame.getDay() > 30 ) {
+            System.out.println(isNew);
+            System.out.println(newGame.getDay());
+            throw new IllegalArgumentException("invalid day value. must be greater than prevDay and less than 30");
+        }
+        int waterScore = calculateWaterScore(newGame.getWaterScore());
+        int fertilizerScore = calculateFertilizerScore(newGame.getFertilizerScore(), newGame.getDay());
+        int prevTotalScore = prevGame.getTotalScore();
+        System.out.println("waterscoer: " + waterScore);
+        System.out.println("fertilizerscore:" + fertilizerScore);
+        System.out.println("prevtotal: " + prevTotalScore);
+        System.out.println("newtotal: " + prevTotalScore + waterScore + fertilizerScore);
+        prevGame.setDay(newGame.getDay());
+        prevGame.setTotalScore(prevTotalScore + waterScore + fertilizerScore);
+        System.out.println("newtotalfromrepo: " + gameRepository.findById(prevGame.getId()).get().getTotalScore());
+        return gameRepository.save(prevGame);
+    }
+
+    private int calculateFertilizerScore(boolean fertilizerScore, int day) {
+        double fertilizerScoreMultiplier = 1;
+        if (fertilizerScore && (day % 2 == 0) && day > 5) {
+            fertilizerScoreMultiplier *= MULTIPLIERS.get(3);
+        }  else if ((fertilizerScore && (day % 2 == 0) && day < 5) ){
+            fertilizerScoreMultiplier *= MULTIPLIERS.get(5);
+        } else if ((fertilizerScore && (day % 2 != 0)) ) {
+            fertilizerScoreMultiplier *= MULTIPLIERS.get(7);
+        }
+        System.out.println("fertilizerMultiplier: " + fertilizerScoreMultiplier);
+        return (int) (fertilizerScoreMultiplier * 1000);
+    }
+
+    private int calculateWaterScore (List<Integer> waterScore) {
+        double waterScoreMultiplier = 1;
+        int timesWaterdCorrectly = 0;
+        for (int score : waterScore){
+            if (score == 3) {
+                if (timesWaterdCorrectly == 0) {
+                    waterScoreMultiplier *= MULTIPLIERS.get(score);
+                    timesWaterdCorrectly = 1;
+                } else {
+                    waterScoreMultiplier *= MULTIPLIERS.get(-1);
+                }
+            }  else {
+                waterScoreMultiplier *= MULTIPLIERS.get(score);
+            }
+        }
+        System.out.println("waterMultiplier: " + waterScoreMultiplier);
+        return (int) (waterScoreMultiplier * 1000);
     }
 
 }
