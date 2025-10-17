@@ -3,9 +3,9 @@ package com.example.pumpking_backend.controller;
 
 import com.example.pumpking_backend.model.Game;
 import com.example.pumpking_backend.service.GameService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/games")
@@ -17,9 +17,9 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping
-    public Game saveGame(Game game) {
-        return gameService.createGame(game);
+    @PostMapping("/daytick")
+    public ResponseEntity<Game> dayTick(@RequestBody Game game) {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameScore(game));
     }
 
 
