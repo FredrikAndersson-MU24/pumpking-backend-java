@@ -29,17 +29,6 @@ public class Game {
     public Game() {
     }
 
-    public Game(int day, int timeOfDay, List<Integer>  waterScore, boolean fertilizerScore, int weedsScore, int totalScore, String userName) {
-        this.day = day;
-        this.timeOfDay = timeOfDay;
-        this.waterScore = waterScore;
-        this.fertilizerScore = fertilizerScore;
-        this.weedsScore = weedsScore;
-        this.totalScore = totalScore;
-        this.userName = userName;
-    }
-
-
     public int getId() {
         return id;
     }
