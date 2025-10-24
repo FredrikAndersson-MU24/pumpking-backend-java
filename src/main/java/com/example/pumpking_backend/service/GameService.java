@@ -51,7 +51,7 @@ public class GameService {
         System.out.println("newtotal: " + prevTotalScore + waterScore + fertilizerScore);
         prevGame.setDay(newGame.getDay());
         prevGame.setTotalScore(prevTotalScore + waterScore + fertilizerScore);
-        System.out.println("newtotalfromrepo: " + gameRepository.findById(prevGame.getId()).get().getTotalScore());
+        //System.out.println("newtotalfromrepo: " + gameRepository.findById(prevGame.getId()).get().getTotalScore());
         return gameRepository.save(prevGame);
     }
 
