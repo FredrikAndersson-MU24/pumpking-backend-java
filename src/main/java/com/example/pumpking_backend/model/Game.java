@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "games")
 @Entity
@@ -14,8 +15,8 @@ public class Game {
     private int id;
     private int day;
     private int timeOfDay;
-    private int waterScore;
-    private int fertilizerScore;
+    private List<Integer> waterScore;
+    private boolean fertilizerScore;
     private int weedsScore;
     private int totalScore;
     private String userName;
@@ -28,14 +29,27 @@ public class Game {
     public Game() {
     }
 
-    public Game(int day, int timeOfDay, int waterScore, int fertilizerScore, int weedsScore, int totalScore, String userName) {
+    public Game(int id, int day, int timeOfDay, List<Integer> waterScore, boolean fertilizerScore, int weedsScore) {
+        this.id = id;
+        this.day = day;
+        this.timeOfDay = timeOfDay;
+        this.waterScore = waterScore;
+        this.fertilizerScore = fertilizerScore;
+        this.weedsScore = weedsScore;
+    }
+
+    public Game(int id, int day, int timeOfDay, List<Integer> waterScore, boolean fertilizerScore, int weedsScore, int totalScore) {
+        this.id = id;
         this.day = day;
         this.timeOfDay = timeOfDay;
         this.waterScore = waterScore;
         this.fertilizerScore = fertilizerScore;
         this.weedsScore = weedsScore;
         this.totalScore = totalScore;
-        this.userName = userName;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getDay() {
@@ -54,19 +68,19 @@ public class Game {
         this.timeOfDay = timeOfDay;
     }
 
-    public int getWaterScore() {
+    public List<Integer>  getWaterScore() {
         return waterScore;
     }
 
-    public void setWaterScore(int waterScore) {
+    public void setWaterScore(List<Integer>  waterScore) {
         this.waterScore = waterScore;
     }
 
-    public int getFertilizerScore() {
+    public boolean getFertilizerScore() {
         return fertilizerScore;
     }
 
-    public void setFertilizerScore(int fertilizerScore) {
+    public void setFertilizerScore(boolean  fertilizerScore) {
         this.fertilizerScore = fertilizerScore;
     }
 
