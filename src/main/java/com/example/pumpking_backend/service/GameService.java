@@ -57,12 +57,12 @@ public class GameService {
 
     private int calculateFertilizerScore(boolean fertilizerScore, int day) {
         double fertilizerScoreMultiplier = 1;
-        if (fertilizerScore && (day % 2 == 0) && day > 5) {
-            fertilizerScoreMultiplier *= MULTIPLIERS.get(3);
-        }  else if ((fertilizerScore && (day % 2 == 0) && day < 5) ){
-            fertilizerScoreMultiplier *= MULTIPLIERS.get(5);
-        } else if ((fertilizerScore && (day % 2 != 0)) ) {
+        if ((fertilizerScore && day < 5) || (!fertilizerScore && day >= 5)) {
             fertilizerScoreMultiplier *= MULTIPLIERS.get(7);
+        }  else if ((fertilizerScore && (day % 2 == 0)) ){
+            fertilizerScoreMultiplier *= MULTIPLIERS.get(5);
+        } else {
+            fertilizerScoreMultiplier *= MULTIPLIERS.get(3);
         }
         System.out.println("fertilizerMultiplier: " + fertilizerScoreMultiplier);
         return (int) (fertilizerScoreMultiplier * 1000);
@@ -71,6 +71,9 @@ public class GameService {
     private int calculateWaterScore (List<Integer> waterScore) {
         double waterScoreMultiplier = 1;
         int timesWaterdCorrectly = 0;
+        if (waterScore.isEmpty()) {
+            return (int) (0.1 * 1000);
+        }
         for (int score : waterScore){
             if (score == 3) {
                 if (timesWaterdCorrectly == 0) {
