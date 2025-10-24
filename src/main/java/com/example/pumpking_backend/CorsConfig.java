@@ -14,8 +14,9 @@ public class CorsConfig {
 
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/games/daytick")
-                        .allowedOrigins("http://localhost:5173");
+                registry.addMapping("/api/games/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("POST", "DELETE");
             }
 
         };
