@@ -2,6 +2,7 @@ package com.example.pumpking_backend.service;
 
 import com.example.pumpking_backend.model.Game;
 import com.example.pumpking_backend.repository.GameRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -90,4 +91,13 @@ public class GameService {
         return (int) (waterScoreMultiplier * 1000);
     }
 
+    public void deleteGameById(int id) {
+        Game savedGame = gameRepository.findById(id).orElse(null);
+        System.out.println(id);
+        if (savedGame == null) {
+            throw new EntityNotFoundException();
+        } else {
+            gameRepository.deleteById(id);
+        }
+    }
 }
