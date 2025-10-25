@@ -39,7 +39,7 @@ public class GameService {
             prevGame = gameRepository.save(newGame);
             isNew = true;
         }
-        if (!isNew && (newGame.getDay() <= prevGame.getDay()) || newGame.getDay() > 30 ) {
+        if (!isNew && (newGame.getDay() != prevGame.getDay() + 1) || newGame.getDay() > 30 ) {
             System.out.println(isNew);
             System.out.println(newGame.getDay());
             throw new IllegalArgumentException("invalid day value. must be greater than prevDay and less than 30");
