@@ -1,6 +1,7 @@
 package com.example.pumpking_backend.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 
@@ -24,6 +25,8 @@ public class Game {
     private Date creationDate;
     @CurrentTimestamp
     private Date completionDate;
+    @ColumnDefault("false")
+    private boolean finished;
 
 
     public Game() {
@@ -46,6 +49,16 @@ public class Game {
         this.fertilizerScore = fertilizerScore;
         this.weedsScore = weedsScore;
         this.totalScore = totalScore;
+    }
+
+    public Game(int id, int day, int timeOfDay, List<Integer> waterScore, boolean fertilizerScore, int weedsScore, String userName) {
+        this.id = id;
+        this.day = day;
+        this.timeOfDay = timeOfDay;
+        this.waterScore = waterScore;
+        this.fertilizerScore = fertilizerScore;
+        this.weedsScore = weedsScore;
+        this.userName = userName;
     }
 
     public int getId() {
@@ -122,5 +135,13 @@ public class Game {
 
     public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 }

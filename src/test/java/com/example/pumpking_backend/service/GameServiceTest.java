@@ -40,7 +40,7 @@ class GameServiceTest {
         when(gameRepository.save(any(Game.class))).thenAnswer(invocation -> invocation.getArgument(0)
         );
         //Act
-        Game response = gameService.getGameScore(newGame);
+        Game response = gameService.dayTick(newGame);
         //Assert
         assertEquals(newTotal, response.getTotalScore());
         verify(gameRepository).save(any(Game.class));

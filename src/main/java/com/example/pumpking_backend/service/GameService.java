@@ -3,6 +3,7 @@ package com.example.pumpking_backend.service;
 import com.example.pumpking_backend.model.Game;
 import com.example.pumpking_backend.repository.GameRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game getGameScore(Game newGame) {
+    public Game dayTick(Game newGame) {
         Game prevGame = gameRepository.findById(newGame.getId()).orElse(null);
         boolean isNew = false;
         if (prevGame == null) {
@@ -38,7 +39,7 @@ public class GameService {
             prevGame = gameRepository.save(newGame);
             isNew = true;
         }
-        if (!isNew && (newGame.getDay() <= prevGame.getDay()) || newGame.getDay() > 30 ) {
+        if (!isNew && (newGame.getDay() != prevGame.getDay() + 1) || newGame.getDay() > 30 ) {
             System.out.println(isNew);
             System.out.println(newGame.getDay());
             throw new IllegalArgumentException("invalid day value. must be greater than prevDay and less than 30");
@@ -46,13 +47,8 @@ public class GameService {
         int waterScore = calculateWaterScore(newGame.getWaterScore());
         int fertilizerScore = calculateFertilizerScore(newGame.getFertilizerScore(), newGame.getDay());
         int prevTotalScore = prevGame.getTotalScore();
-        System.out.println("waterscoer: " + waterScore);
-        System.out.println("fertilizerscore:" + fertilizerScore);
-        System.out.println("prevtotal: " + prevTotalScore);
-        System.out.println("newtotal: " + prevTotalScore + waterScore + fertilizerScore);
         prevGame.setDay(newGame.getDay());
         prevGame.setTotalScore(prevTotalScore + waterScore + fertilizerScore);
-        //System.out.println("newtotalfromrepo: " + gameRepository.findById(prevGame.getId()).get().getTotalScore());
         return gameRepository.save(prevGame);
     }
 
@@ -92,12 +88,35 @@ public class GameService {
     }
 
     public void deleteGameById(int id) {
+        Game savedGame = validatedGame(id);
+        if (!savedGame.isFinished()){
+            gameRepository.deleteById(id);
+        }
+    }
+
+    public Game saveAtEndOfGame(Game game) throws BadRequestException {
+        if (game.getDay() == 30) {
+            Game savedGame = validatedGame(game.getId());
+            if (savedGame.isFinished()) {
+                throw new BadRequestException("Game is alreday finished.");
+            }
+            savedGame.setFinished(true);
+            savedGame.setUserName(game.getUserName());
+            System.out.println(savedGame);
+            gameRepository.save(savedGame);
+            return savedGame;
+        } else {
+            throw new IllegalArgumentException("Invalid day. Should be 30.");
+
+        }
+    }
+
+    private Game validatedGame(int id) {
         Game savedGame = gameRepository.findById(id).orElse(null);
-        System.out.println(id);
         if (savedGame == null) {
             throw new EntityNotFoundException();
         } else {
-            gameRepository.deleteById(id);
+            return savedGame;
         }
     }
 }
