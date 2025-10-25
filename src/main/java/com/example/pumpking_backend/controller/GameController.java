@@ -22,5 +22,9 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameScore(game));
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteGame(@PathVariable int id) {
+        gameService.deleteGameById(id);
+    }
 
 }
