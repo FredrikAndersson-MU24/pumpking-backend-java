@@ -28,7 +28,7 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game getGameScore(Game newGame) {
+    public Game dayTick(Game newGame) {
         Game prevGame = gameRepository.findById(newGame.getId()).orElse(null);
         boolean isNew = false;
         if (prevGame == null) {
