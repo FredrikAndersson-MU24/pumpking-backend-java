@@ -20,7 +20,7 @@ public class GameController {
 
     @PostMapping("/daytick")
     public ResponseEntity<Game> dayTick(@RequestBody Game game) {
-        return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameScore(game));
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.dayTick(game));
     }
 
     @PostMapping("/saveAtEndOfGame")
