@@ -88,11 +88,8 @@ public class GameService {
     }
 
     public void deleteGameById(int id) {
-        Game savedGame = gameRepository.findById(id).orElse(null);
-        System.out.println(id);
-        if (savedGame == null) {
-            throw new EntityNotFoundException();
-        } else {
+        Game savedGame = validatedGame(id);
+        if (!savedGame.isFinished()){
             gameRepository.deleteById(id);
         }
     }
