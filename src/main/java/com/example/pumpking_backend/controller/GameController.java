@@ -3,6 +3,7 @@ package com.example.pumpking_backend.controller;
 
 import com.example.pumpking_backend.model.Game;
 import com.example.pumpking_backend.service.GameService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,11 @@ public class GameController {
     @PostMapping("/daytick")
     public ResponseEntity<Game> dayTick(@RequestBody Game game) {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameScore(game));
+    }
+
+    @PostMapping("/saveAtEndOfGame")
+    public ResponseEntity<Game> saveAtEndOfGame(@RequestBody Game game) throws BadRequestException {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.saveAtEndOfGame(game));
     }
 
     @DeleteMapping("/delete/{id}")
