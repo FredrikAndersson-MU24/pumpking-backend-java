@@ -30,7 +30,7 @@ public class GameController {
     }
 
     @PostMapping("/saveAtEndOfGame")
-    public ResponseEntity<Game> saveAtEndOfGame(@RequestBody Game game) throws BadRequestException {
+    public ResponseEntity<List<Game>> saveAtEndOfGame(@RequestBody Game game) throws BadRequestException {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.saveAtEndOfGame(game));
     }
 
