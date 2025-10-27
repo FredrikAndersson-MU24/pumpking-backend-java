@@ -94,7 +94,7 @@ public class GameService {
         }
     }
 
-    public Game saveAtEndOfGame(Game game) throws BadRequestException {
+    public List<Game> saveAtEndOfGame(Game game) throws BadRequestException {
         if (game.getDay() == 30) {
             Game savedGame = validatedGame(game.getId());
             if (savedGame.isFinished()) {
