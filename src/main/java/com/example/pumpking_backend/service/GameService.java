@@ -94,7 +94,7 @@ public class GameService {
         }
     }
 
-    public Game saveAtEndOfGame(Game game) throws BadRequestException {
+    public List<Game> saveAtEndOfGame(Game game) throws BadRequestException {
         if (game.getDay() == 30) {
             Game savedGame = validatedGame(game.getId());
             if (savedGame.isFinished()) {
@@ -104,7 +104,7 @@ public class GameService {
             savedGame.setUserName(game.getUserName());
             System.out.println(savedGame);
             gameRepository.save(savedGame);
-            return savedGame;
+            return getFinishedGames();
         } else {
             throw new IllegalArgumentException("Invalid day. Should be 30.");
 
@@ -118,5 +118,9 @@ public class GameService {
         } else {
             return savedGame;
         }
+    }
+
+    public List<Game> getFinishedGames() {
+        return gameRepository.findByFinished(true);
     }
 }

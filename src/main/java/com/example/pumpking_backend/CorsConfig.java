@@ -1,5 +1,6 @@
 package com.example.pumpking_backend;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -13,10 +14,10 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
 
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@Nonnull CorsRegistry registry) {
                 registry.addMapping("/api/games/**")
                         .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("POST", "DELETE");
+                        .allowedMethods("GET", "POST", "DELETE");
             }
 
         };
