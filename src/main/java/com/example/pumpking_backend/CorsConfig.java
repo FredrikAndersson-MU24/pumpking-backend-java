@@ -16,7 +16,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/games/**")
                         .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("POST", "DELETE");
+                        .allowedMethods("GET", "POST", "DELETE");
             }
 
         };
