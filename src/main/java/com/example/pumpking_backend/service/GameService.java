@@ -119,4 +119,8 @@ public class GameService {
             return savedGame;
         }
     }
+
+    public List<Game> getFinishedGames() {
+        return gameRepository.findByFinished(true);
+    }
 }
