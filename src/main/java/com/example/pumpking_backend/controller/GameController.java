@@ -7,6 +7,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/games")
@@ -16,6 +17,11 @@ public class GameController {
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
+    }
+
+    @GetMapping("/finished")
+    public ResponseEntity<List<Game>> getFinishedGames() {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.getFinishedGames());
     }
 
     @PostMapping("/daytick")
