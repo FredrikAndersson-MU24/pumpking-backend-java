@@ -104,7 +104,7 @@ public class GameService {
             savedGame.setUserName(game.getUserName());
             System.out.println(savedGame);
             gameRepository.save(savedGame);
-            return savedGame;
+            return getFinishedGames();
         } else {
             throw new IllegalArgumentException("Invalid day. Should be 30.");
 
