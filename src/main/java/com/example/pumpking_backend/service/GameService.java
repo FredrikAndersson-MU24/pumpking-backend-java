@@ -61,7 +61,6 @@ public class GameService {
         } else {
             fertilizerScoreMultiplier *= MULTIPLIERS.get(3);
         }
-        System.out.println("fertilizerMultiplier: " + fertilizerScoreMultiplier);
         return (int) (fertilizerScoreMultiplier * 1000);
     }
 
@@ -83,7 +82,6 @@ public class GameService {
                 waterScoreMultiplier *= MULTIPLIERS.get(score);
             }
         }
-        System.out.println("waterMultiplier: " + waterScoreMultiplier);
         return (int) (waterScoreMultiplier * 1000);
     }
 
