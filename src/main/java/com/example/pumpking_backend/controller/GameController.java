@@ -19,13 +19,9 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @GetMapping("/finished")
-    public ResponseEntity<List<Game>> getFinishedGames() {
-        return ResponseEntity.status(HttpStatus.OK).body(gameService.getFinishedGames());
-    }
-
+    //Create
     @PostMapping("/daytick")
-    public ResponseEntity<Game> dayTick(@RequestBody Game game) {
+    public ResponseEntity<Game> dayTick(@RequestBody Game game) throws BadRequestException {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.dayTick(game));
     }
 
@@ -34,6 +30,13 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.saveAtEndOfGame(game));
     }
 
+    //Read
+    @GetMapping("/finished")
+    public ResponseEntity<List<Game>> getFinishedGames() {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.getFinishedGames());
+    }
+
+    //Delete
     @DeleteMapping("/delete/{id}")
     public void deleteGame(@PathVariable int id) {
         gameService.deleteGameById(id);
