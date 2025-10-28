@@ -2,6 +2,7 @@ package com.example.pumpking_backend.service;
 
 import com.example.pumpking_backend.model.Game;
 import com.example.pumpking_backend.repository.GameRepository;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,14 +27,14 @@ class GameServiceTest {
     @InjectMocks GameService gameService;
 
     @Test
-    void getGameScoreReturnsUpdatedGameIfValidDay() {
+    void getGameScoreReturnsUpdatedGameIfValidDay() throws BadRequestException {
         //Arrange
         List<Integer> oldWaterScore = new ArrayList<>();
         oldWaterScore.add(3);
         boolean fertilizerScore = true;
         int weedsScore = 1;
         int prevTotal = 1000;
-        int newTotal = 2600;
+        int newTotal = 2200;
         Game prevGame = new Game(1,1, 0, oldWaterScore, fertilizerScore, weedsScore, prevTotal);
         Game newGame = new Game(1, 2, 0, oldWaterScore, fertilizerScore, weedsScore);
         when(gameRepository.findById(1)).thenReturn(Optional.of(prevGame));
