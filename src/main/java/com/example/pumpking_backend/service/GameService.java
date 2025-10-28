@@ -40,6 +40,35 @@ public class GameService {
         return gameRepository.save(prevGame);
     }
 
+    public List<Game> saveAtEndOfGame(Game game) throws BadRequestException {
+        validGame(game);
+        if (game.getDay() == 30) {
+            Game savedGame = findGameById(game.getId());
+            if (savedGame.isFinished()) {
+                throw new BadRequestException("Game is alreday finished.");
+            }
+            savedGame.setFinished(true);
+            savedGame.setUserName(game.getUserName());
+            System.out.println(savedGame);
+            gameRepository.save(savedGame);
+            return getFinishedGames();
+        } else {
+            throw new BadRequestException("Invalid day. Should be 30.");
+
+        }
+    }
+
+    public List<Game> getFinishedGames() {
+        return gameRepository.findByFinished(true);
+    }
+
+    public void deleteGameById(int id) {
+        Game savedGame = findGameById(id);
+        if (!savedGame.isFinished()){
+            gameRepository.deleteById(id);
+        }
+    }
+
     private int calculateFertilizerScore(boolean fertilizerScore, int day) {
         double fertilizerScoreMultiplier = 1;
         if ((fertilizerScore && day < 5) || (!fertilizerScore && day >= 5)) {
