@@ -111,7 +111,7 @@ public class GameService {
         }
     }
 
-    private Game validatedGame(int id) {
+    private Game findGameById(int id) {
         Game savedGame = gameRepository.findById(id).orElse(null);
         if (savedGame == null) {
             throw new EntityNotFoundException();
