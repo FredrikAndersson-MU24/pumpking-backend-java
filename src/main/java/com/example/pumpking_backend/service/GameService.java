@@ -29,21 +29,9 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game dayTick(Game newGame) {
-        Game prevGame = gameRepository.findById(newGame.getId()).orElse(null);
-        boolean isNew = false;
-        if (prevGame == null) {
-            if (newGame.getDay() != 0) {
-                throw new IllegalArgumentException("invalid day for new game, should be zero");
-            }
-            prevGame = gameRepository.save(newGame);
-            isNew = true;
-        }
-        if (!isNew && (newGame.getDay() != prevGame.getDay() + 1) || newGame.getDay() > 30 ) {
-            System.out.println(isNew);
-            System.out.println(newGame.getDay());
-            throw new IllegalArgumentException("invalid day value. must be greater than prevDay and less than 30");
-        }
+    public Game dayTick(Game newGame) throws BadRequestException {
+        validGame(newGame);
+        Game prevGame = getGame(newGame);
         int waterScore = calculateWaterScore(newGame.getWaterScore());
         int fertilizerScore = calculateFertilizerScore(newGame.getFertilizerScore(), newGame.getDay());
         int prevTotalScore = prevGame.getTotalScore();
@@ -85,28 +73,20 @@ public class GameService {
         return (int) (waterScoreMultiplier * 1000);
     }
 
-    public void deleteGameById(int id) {
-        Game savedGame = validatedGame(id);
-        if (!savedGame.isFinished()){
-            gameRepository.deleteById(id);
-        }
-    }
-
-    public List<Game> saveAtEndOfGame(Game game) throws BadRequestException {
-        if (game.getDay() == 30) {
-            Game savedGame = validatedGame(game.getId());
-            if (savedGame.isFinished()) {
-                throw new BadRequestException("Game is alreday finished.");
+    private Game getGame(Game newGame) throws BadRequestException {
+        Game prevGame = gameRepository.findById(newGame.getId()).orElse(null);
+        boolean exists = true;
+        if (prevGame == null) {
+            if (newGame.getDay() != 0) {
+                throw new BadRequestException("invalid day for new game, should be zero");
             }
-            savedGame.setFinished(true);
-            savedGame.setUserName(game.getUserName());
-            System.out.println(savedGame);
-            gameRepository.save(savedGame);
-            return getFinishedGames();
-        } else {
-            throw new IllegalArgumentException("Invalid day. Should be 30.");
-
+            prevGame = gameRepository.save(newGame);
+            exists = false;
         }
+        if (exists && (newGame.getDay() != prevGame.getDay() + 1) ) {
+            throw new BadRequestException("invalid day value. must be greater than prevDay");
+        }
+        return prevGame;
     }
 
     private Game findGameById(int id) {
