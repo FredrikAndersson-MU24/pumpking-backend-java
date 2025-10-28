@@ -120,7 +120,15 @@ public class GameService {
         }
     }
 
-    public List<Game> getFinishedGames() {
-        return gameRepository.findByFinished(true);
+    public void validGame(Game game) throws BadRequestException {
+        if (game.getDay() < 0) {
+            throw new BadRequestException("Invalid day, should not be negative");
+        } else if (game.getDay() > 30) {
+            throw new BadRequestException("Invalid day, should not be over 30");
+        } else if (game.getTotalScore() < 0) {
+            throw new BadRequestException("Invalid total score, should not be negative");
+        } else if (game.getTotalScore() > 60000) {
+            throw new BadRequestException("Invalid total score");
+        }
     }
 }
