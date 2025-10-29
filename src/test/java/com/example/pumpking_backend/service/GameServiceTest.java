@@ -35,7 +35,7 @@ class GameServiceTest {
         boolean fertilizerScore = true;
         int weedsScore = 1;
         int prevTotal = 1000;
-        int newTotal = 2600;
+        int newTotal = 2200;
         Game prevGame = new Game(1,1, 0, oldWaterScore, fertilizerScore, weedsScore, prevTotal);
         Game newGame = new Game(1, 2, 0, oldWaterScore, fertilizerScore, weedsScore);
         when(gameRepository.findById(1)).thenReturn(Optional.of(prevGame));
