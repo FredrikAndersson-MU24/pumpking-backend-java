@@ -16,7 +16,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@Nonnull CorsRegistry registry) {
                 registry.addMapping("/api/games/**")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins("http://pumpking-env.eba-wm32fiaq.eu-north-1.elasticbeanstalk.com")
                         .allowedMethods("GET", "POST", "DELETE");
             }
 
